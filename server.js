@@ -1,6 +1,7 @@
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+var path = require("path");
 
 var axios = require("axios");
 var cheerio = require("cheerio");
@@ -15,40 +16,63 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+//Routes
+app.get("/", function(req, res) {
+    res.sendFile(path.join(__dirname, "./public/index.html"));
+});
 
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
+app.get("/saved", function(req, res) {
+    res.sendFile(path.join(__dirname, "./public/review.html"));
+});
 
-//Routes go here. https://www.nytimes.com/
-app.get("/scrape", function(req, res) {
+
+// var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+    // mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost/mongoHeadlines", { useNewUrlParser: true });
+
+app.get("/clear", function(req, res) {
+    db.Article.remove({"saved": false})
+        .then(function(dbArticle) {
+            scrape();
+            res.json(dbArticle);
+        })
+        .catch(function(err) {
+            res.json(err);
+        });
+});
+
+function scrape() {
     axios.get("https://www.nytimes.com/").then(function(response) {
         var $ = cheerio.load(response.data);
 
         $("article h2").each(function(i, element) {
-            var result = [];
-            var title = $(this)
-                .closest()
-                .children("span")
-                .text();
+            var result = {};
 
-            var link = $(this)
-                .parent("a")
-                .attr("href");
-
-            var summary = $(this)
-                .next("p")
-                .text();
-
-            result.push({
-                title: title,
-                link: link,
-                summary: summary
-            });
+            result.title = $(element).text();
+            var link = $(element).parent().parent().attr("href");
+            result.link = "https://www.nytimes.com" + link;
+            result.summary = $(element).parent().siblings().text();
+            
+            db.Article.create(result) 
+                .then(function(dbArticle) {
+                    console.log(dbArticle);
+                })
+                .catch(function(err) {
+                    console.log(err);
+                });
         });
-        console.log(result);
     });
-});
+};
 
+app.get("/articles", function(req, res) {
+    db.Article.find({})
+        .then(function(dbArticle) {
+            res.json(dbArticle);
+        })
+        .catch(function(err) {
+            res.json(err);
+        });
+});
 
 app.listen(PORT, function() {
     console.log("App running on port: " + PORT + "!");

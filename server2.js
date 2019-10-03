@@ -9,9 +9,9 @@ axios.get("https://www.nytimes.com/").then(function(response) {
     $("article h2").each(function(i, element) {
         var title = $(element).text();
         var link = $(element).parent().parent().attr("href");
+        link = "https://www.nytimes.com" + link;
         var summary = $(element).parent().siblings().text();
         
-        console.log(pic);
         if (title != "" && link != "" && summary != "")
         {
             results.push({
@@ -21,6 +21,5 @@ axios.get("https://www.nytimes.com/").then(function(response) {
             });
         };
     });
-
     console.log(results);
-})
+});

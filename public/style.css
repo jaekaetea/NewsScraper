@@ -53,7 +53,7 @@ button {
 }
 
 footer {
-    position: absolute;
+    position: fixed;
     background-color: #2196f3;
     color: white;
     text-align: left;
