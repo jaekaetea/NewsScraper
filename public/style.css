@@ -1,0 +1,68 @@
+body {
+    text-align: center;
+    background-image: url("./paper.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: -1;
+}
+
+.bg-primary {
+    background-color: #2196f3 !important;
+}
+
+.jumbotron {
+    position: relative;
+    background-image: url(./newspaper.jpg);
+    background-repeat: no-repeat;
+    height: 100%;
+    background-size: cover;
+
+    font-weight: bolder;
+    color: white;
+    font-variant: small-caps;
+    text-shadow: 5px 5px 10px black;
+}
+
+button {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+#articles {
+    background-image: url("./paper.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    margin-top: -35px;
+}
+
+.card {
+    width: 90%;
+    display: inline-block;
+    margin: 20px;
+    text-align: left;
+}
+
+.card-header {
+    background-color: #2196f3;
+    color: white;
+}
+
+#card-button {
+    float: right;
+    margin: -7.5px 0;
+}
+
+footer {
+    position: absolute;
+    background-color: #2196f3;
+    color: white;
+    text-align: left;
+    padding-top: 30px;
+    width: 100%;
+    bottom: 0;
+}
+
+#footer {
+    background-color: #0c7cd5;
+    padding:  5px 10px;
+}
