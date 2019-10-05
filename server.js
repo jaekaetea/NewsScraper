@@ -31,9 +31,8 @@ app.get("/saved", function(req, res) {
 mongoose.connect("mongodb://localhost/mongoHeadlines", { useNewUrlParser: true });
 
 app.get("/clear", function(req, res) {
-    db.Article.remove({"saved": false})
+    db.Article.remove({ "saved": false })
         .then(function(dbArticle) {
-            scrape();
             res.json(dbArticle);
         })
         .catch(function(err) {
@@ -41,7 +40,17 @@ app.get("/clear", function(req, res) {
         });
 });
 
-function scrape() {
+app.get("/clear-saved", function(req, res) {
+    db.Article.remove({ "saved": true })
+        .then(function(dbArticle) {
+            res.json(dbArticle);
+        })
+        .catch(function(err) {
+            res.json(err);
+        });
+});
+
+app.get("/scrape", function(req, res) {
     axios.get("https://www.nytimes.com/").then(function(response) {
         var $ = cheerio.load(response.data);
 
@@ -53,19 +62,73 @@ function scrape() {
             result.link = "https://www.nytimes.com" + link;
             result.summary = $(element).parent().siblings().text();
             
-            db.Article.create(result) 
+            if (result.title && result.link && result.summary) {
+                db.Article.create(result) 
                 .then(function(dbArticle) {
-                    console.log(dbArticle);
+                    console.log(".");
                 })
                 .catch(function(err) {
                     console.log(err);
                 });
+            }
         });
+        res.json(dbArticle);
     });
-};
+});
 
-app.get("/articles", function(req, res) {
-    db.Article.find({})
+app.get("/articles/", function(req, res) {
+    db.Article.find({ "saved": false })
+        .then(function(dbArticle) {
+            res.json(dbArticle);
+        })
+        .catch(function(err) {
+            res.json(err);
+        });
+});
+
+app.get("/articles/saved", function(req, res) {
+    db.Article.find({ "saved": true })
+        .then(function(dbArticle) {
+            res.json(dbArticle);
+        })
+        .catch(function(err) {
+            res.json(err);
+        });
+});
+
+app.get("/article/:id", function(req, res) {
+    db.Article.update({ _id: req.params.id  }, { $set: { "saved": true }})
+        .then(function(dbArticle) {
+            res.json(dbArticle);
+        })
+        .catch(function(err) {
+            res.json(err);
+        });
+});
+
+// app.get("/articles/:id", function(req, res) {
+//     db.Article.find({ _id: req.params.id })
+//         .populate("review")
+//         .then(function(dbArticle) {
+//             res.json(dbArticle);
+//         })
+//         .catch(function(err) {
+//             res.json(err);
+//         });
+// });
+
+app.get("/clear-article/:id", function(req, res) {
+    db.Article.remove({ _id: req.params.id })
+        .then(function(dbArticle) {
+            res.json(dbArticle);
+        })
+        .catch(function(err) {
+            res.json(err);
+        });
+});
+
+app.get("/review/:id", function(req, res) {
+    db.Review.remove({ _id: req.params.id })
         .then(function(dbArticle) {
             res.json(dbArticle);
         })
