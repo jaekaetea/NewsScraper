@@ -71,6 +71,28 @@ textarea {
     width: 100%;
 }
 
+#review-container {
+    height: 250px;
+    overflow-y: scroll;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    padding: 10px;
+    border: solid lightgray 1px;
+}
+
+.review-box {
+    text-align: left;
+    border: solid lightgray 1px;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+button.delete {
+    float: right;
+    margin: -10px -5px 0 0;
+}
+
 footer {
     position: fixed;
     background-color: #2196f3;

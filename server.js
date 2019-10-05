@@ -147,16 +147,16 @@ app.post("/review/:id", function(req, res) {
         });
 });
 
-// //Deletes a review
-// app.get("/clear-review/:id", function(req, res) {
-//     db.Review.remove({ _id: req.params.id })
-//         .then(function(dbArticle) {
-//             res.json(dbArticle);
-//         })
-//         .catch(function(err) {
-//             res.json(err);
-//         });
-// });
+//Deletes a review
+app.get("/clear-review/:id", function(req, res) {
+    db.Review.remove({ _id: req.params.id })
+        .then(function(dbArticle) {
+            res.json(dbArticle);
+        })
+        .catch(function(err) {
+            res.json(err);
+        });
+});
 
 app.listen(PORT, function() {
     console.log("App running on port: " + PORT + "!");

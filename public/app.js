@@ -36,7 +36,6 @@ function getArticles() {
 function saveArticle() {
     var id = this.id;
     $(this).parents(".card").remove();
-    
     $.getJSON("/article/" + id, function(data) {
         console.log("Done.");
     });

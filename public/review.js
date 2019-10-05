@@ -5,6 +5,7 @@ $(document).on("click", "button#clear", clear);
 $(document).on("click", "button.article", deleteArticle);
 $(document).on("click", "button.notes", openModal);
 $(document).on("click", "button.review", addReview);
+$(document).on("click", "button.delete", deleteReview);
 
 function clear() {
     $("#articles").empty();
@@ -38,13 +39,10 @@ function deleteArticle() {
 
 function openModal() {
     var id = this.id;
-    console.log(id);
     var title = $(this).siblings("a#newsLink").text();
     $("#ModalLabel").text("Note(s) for: " + title);
-    $(".modal-body").empty();
     $(".modal-body").attr("id", id);
-    $(".modal-body")
-    .append("<textarea id='review' placeholder='Add a Note' rows='4' cols='60'>")
+    getReviews();
 };
 
 function addReview() {
@@ -62,21 +60,28 @@ function addReview() {
             getReviews();
         });
     };
+    $("#review").val("");
 };
 
 function getReviews() {
+    $("#review-container").empty();
     var id = $(".modal-body").attr("id");
     $.getJSON("/reviews/" + id, function(data) {
-        console.log(data[0].reviews);
-        // for (var i = 0; i < data.length; i++) {
-        //     $(".modal-body")
-        //     .append("<div class='card'><div class='card-header'>" + 
-        //     "<button type='button' class='notes btn btn-success' data-toggle='modal' data-target='#Modal' id=" + data[i]._id + "> Article Notes </button>" +
-        //     "<button type='button' class='article btn btn-danger' id=" + data[i]._id + "> Delete From Saved </button>" +
-        //     "<a href='" + data[i].link + "' target='_blank' id='newsLink'>" + data[i].title + 
-        //     "</a></div>" +
-        //     "<div class='card-body'>" + data[i].summary + "</div></div>");
-        // }
+        var data = data[0].reviews;
+        for (var i = 0; i < data.length; i++) {
+            $("#review-container")
+            .append("<div class='review-box' id='" + data[i]._id + "'>" + data[i].review + 
+            "<button type='button' class='delete btn btn-danger' id=" + data[i]._id + "> X </button>" +
+            "</div>");
+        }
+    });
+};
+
+function deleteReview() {
+    var id = this.id;
+    $(this).parents(".review-box").remove();
+    $.getJSON("/clear-review/" + id, function(data) {
+        console.log("Done.");
     });
 };
 
