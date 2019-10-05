@@ -1,5 +1,29 @@
 # All the News That's Fit to Scrape
 
+
+Experience the app here: https://serene-caverns-06185.herokuapp.com/
+
+In this app, users can see articles from the New York times from web scraping done by cheerio.
+
+![front](/Images/front.png)
+
+![saved](/Images/saved.png)
+
+After the scraping is completed, users can save the articles, comment on the articles, and delete comments from specific articles.
+
+![front](/Images/saving.gif)
+
+
+### Techologies Used
+HTML, CSS, Bootstrap, JavaScript, Express, Cheerio, Axios, and MongoDB. 
+
+
+### Enjoy!
+
+---
+
+## Class Instructions
+
 ### Overview
 
 In this assignment, you'll create a web app that lets users view and leave comments on the latest news. But you're not going to actually write any articles; instead, you'll flex your Mongoose and Cheerio muscles to scrape news from another site.

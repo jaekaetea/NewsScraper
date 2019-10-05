@@ -26,9 +26,9 @@ app.get("/saved", function(req, res) {
 });
 
 
-// var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
-    // mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
-mongoose.connect("mongodb://localhost/mongoHeadlines", { useNewUrlParser: true });
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
+//mongoose.connect("mongodb://localhost/mongoHeadlines", { useNewUrlParser: true });
 
 //Clears home articles
 app.get("/clear", function(req, res) {
