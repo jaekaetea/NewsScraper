@@ -41,6 +41,7 @@ button {
     display: inline-block;
     margin: 20px;
     text-align: left;
+    box-shadow: 10px 10px 20px 5px grey;
 }
 
 .card-header {
@@ -65,6 +66,10 @@ button.article {
 button.notes {
     float: right;
     margin: -7.5px  -10px 0 15px;
+}
+
+button.scrape {
+    margin: -12.5px;
 }
 
 textarea {
@@ -101,6 +106,10 @@ footer {
     padding-top: 30px;
     width: 100%;
     bottom: 0;
+}
+
+#empty-alert {
+    margin-top: 50px;
 }
 
 #footer {

@@ -10,11 +10,26 @@ $(document).on("click", "button.delete", deleteReview);
 function clear() {
     $("#articles").empty();
     $.getJSON("/clear-saved", function(data) {
-        console.log("Cleared.");
+        showEmpty();
     });
 };
 
+function showEmpty() {
+    $("#articles").append(
+        "<div class='alert alert-warning' id='empty-alert' role='alert'>" +
+        "Uh Oh.  Looks like we don't have any saved articles." +
+        "</div>" + 
+        "<div class='card'><div class='card-header'>" +
+        "Would You Like to Browse Available Articles?" +
+        "</div>" +
+        "<div class='card-body'>" + 
+        "<a href='/'> Browse Articles </a>" +
+        "</div></div>"
+    );
+};
+
 function getArticles() {
+    $("#articles").empty();
     $.getJSON("/articles/saved", function(data) {
         for (var i = 0; i < data.length; i++) {
             $("#articles")
@@ -25,6 +40,10 @@ function getArticles() {
             "</a></div>" +
             "<div class='card-body'>" + data[i].summary + "</div></div>");
         }
+    }).then(function() {
+        if ($("#articles").is(':empty')) {
+            showEmpty();
+        };
     });
 };
 
