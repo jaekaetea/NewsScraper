@@ -33,6 +33,7 @@ button {
     background-repeat: no-repeat;
     background-size: 100%;
     margin-top: -35px;
+    margin-bottom: 75px;
 }
 
 .card {
@@ -56,14 +57,18 @@ button {
     color: white;
 }
 
-.btn-success {
+button.article {
     float: right;
     margin: -7.5px;
 }
 
-.btn-info {
+button.notes {
     float: right;
-    margin: -7.5px 15px;
+    margin: -7.5px  -10px 0 15px;
+}
+
+textarea {
+    width: 100%;
 }
 
 footer {

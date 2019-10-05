@@ -30,6 +30,7 @@ app.get("/saved", function(req, res) {
     // mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 mongoose.connect("mongodb://localhost/mongoHeadlines", { useNewUrlParser: true });
 
+//Clears home articles
 app.get("/clear", function(req, res) {
     db.Article.remove({ "saved": false })
         .then(function(dbArticle) {
@@ -40,6 +41,7 @@ app.get("/clear", function(req, res) {
         });
 });
 
+//Clears saved articles
 app.get("/clear-saved", function(req, res) {
     db.Article.remove({ "saved": true })
         .then(function(dbArticle) {
@@ -65,17 +67,17 @@ app.get("/scrape", function(req, res) {
             if (result.title && result.link && result.summary) {
                 db.Article.create(result) 
                 .then(function(dbArticle) {
-                    console.log(".");
+                    res.json(dbArticle);
                 })
                 .catch(function(err) {
                     console.log(err);
                 });
             }
         });
-        res.json(dbArticle);
     });
 });
 
+//Gets articles for index
 app.get("/articles/", function(req, res) {
     db.Article.find({ "saved": false })
         .then(function(dbArticle) {
@@ -86,6 +88,7 @@ app.get("/articles/", function(req, res) {
         });
 });
 
+//Gets all saved articles
 app.get("/articles/saved", function(req, res) {
     db.Article.find({ "saved": true })
         .then(function(dbArticle) {
@@ -96,6 +99,7 @@ app.get("/articles/saved", function(req, res) {
         });
 });
 
+//Saves article
 app.get("/article/:id", function(req, res) {
     db.Article.update({ _id: req.params.id  }, { $set: { "saved": true }})
         .then(function(dbArticle) {
@@ -106,17 +110,7 @@ app.get("/article/:id", function(req, res) {
         });
 });
 
-// app.get("/articles/:id", function(req, res) {
-//     db.Article.find({ _id: req.params.id })
-//         .populate("review")
-//         .then(function(dbArticle) {
-//             res.json(dbArticle);
-//         })
-//         .catch(function(err) {
-//             res.json(err);
-//         });
-// });
-
+//Deletes saved article
 app.get("/clear-article/:id", function(req, res) {
     db.Article.remove({ _id: req.params.id })
         .then(function(dbArticle) {
@@ -127,15 +121,42 @@ app.get("/clear-article/:id", function(req, res) {
         });
 });
 
-app.get("/review/:id", function(req, res) {
-    db.Review.remove({ _id: req.params.id })
-        .then(function(dbArticle) {
-            res.json(dbArticle);
+//Retrives all reviews
+app.get("/reviews/:id", function(req, res) {
+    db.Article.find({ _id: req.params.id })
+        .populate("reviews")
+        .then(function(dbReviews) {
+            res.json(dbReviews);
         })
         .catch(function(err) {
             res.json(err);
         });
 });
+
+//Adds a review
+app.post("/review/:id", function(req, res) {
+    db.Review.create(req.body) 
+        .then(function(dbReview) {
+            return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: { reviews: dbReview._id }}, { new: true });
+        })
+        .then(function(dbArticle) {
+            res.json(dbArticle);
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
+});
+
+// //Deletes a review
+// app.get("/clear-review/:id", function(req, res) {
+//     db.Review.remove({ _id: req.params.id })
+//         .then(function(dbArticle) {
+//             res.json(dbArticle);
+//         })
+//         .catch(function(err) {
+//             res.json(err);
+//         });
+// });
 
 app.listen(PORT, function() {
     console.log("App running on port: " + PORT + "!");

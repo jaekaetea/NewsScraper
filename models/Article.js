@@ -19,10 +19,12 @@ var ArticleSchema = new Schema({
         type: Boolean,
         default: false
     },
-    review: {
+    reviews: [
+        {
         type: Schema.Types.ObjectId,
         ref: "Review"
-    }
+        }
+    ]
 });
 
 var Article = mongoose.model("Article", ArticleSchema);
