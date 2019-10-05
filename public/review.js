@@ -52,7 +52,9 @@ function deleteArticle() {
     $(this).parents(".card").remove();
     
     $.getJSON("/clear-article/" + id, function(data) {
-        console.log("Done.");
+        if ($("#articles").is(':empty')) {
+            showEmpty();
+        };
     });
 };
 
