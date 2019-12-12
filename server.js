@@ -7,7 +7,7 @@ var axios = require("axios");
 var cheerio = require("cheerio");
 
 var db = require("./models");
-var PORT = 3000;
+var PORT = process.env.PORT || 3000;
 var app = express();
 
 app.use(logger("dev"));
@@ -26,7 +26,7 @@ app.get("/saved", function(req, res) {
 });
 
 
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://user:password1@ds253398.mlab.com:53398/heroku_6lds099z";
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 //mongoose.connect("mongodb://localhost/mongoHeadlines", { useNewUrlParser: true });
 
