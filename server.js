@@ -26,7 +26,7 @@ app.get("/saved", function(req, res) {
 });
 
 
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://user:password1@ds253398.mlab.com:53398/heroku_6lds099z";
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 //mongoose.connect("mongodb://localhost/mongoHeadlines", { useNewUrlParser: true });
 
