@@ -7,23 +7,23 @@ var axios = require("axios");
 var cheerio = require("cheerio");
 
 var db = require("./models");
-var PORT = process.env.PORT || 8080;
+var PORT = process.env.PORT || 3000;
 var app = express();
 
 app.use(logger("dev"));
 
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(process.cwd() + "/public"));
+app.use(express.static("public"));
 
 //Routes
-app.get("/", function(req, res) {
-    res.sendFile(path.join(__dirname, "./public/index.html"));
-});
+// app.get("/", function(req, res) {
+//     res.sendFile(path.join(__dirname, "./public/index.html"));
+// });
 
-app.get("/saved", function(req, res) {
-    res.sendFile(path.join(__dirname, "./public/review.html"));
-});
+// app.get("/saved", function(req, res) {
+//     res.sendFile(path.join(__dirname, "./public/review.html"));
+// });
 
 
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
